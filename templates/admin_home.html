@@ -14,31 +14,40 @@
 </ul>
 
 <h2>Warehouses</h2>
+<a href="{% url 'add_warehouse' %}">Add Warehouse</a>
 <ul>
     {% for warehouse in warehouses %}
     <li>
         {{ warehouse.name }} - {{ warehouse.location }} - {{ warehouse.capacity
         }}
+        <a href="{% url 'edit_warehouse' warehouse.id %}">Edit</a>
+        <a href="{% url 'delete_warehouse' warehouse.id %}">Delete</a>
     </li>
     {% endfor %}
 </ul>
 
 <h2>Products</h2>
+<a href="{% url 'add_product' %}">Add Product</a>
 <ul>
     {% for product in products %}
     <li>
         {{ product.name }} - {{ product.description }} - {{ product.price }} -
         {{ product.sku }}
+        <a href="{% url 'edit_product' product.id %}">Edit</a>
+        <a href="{% url 'delete_product' product.id %}">Delete</a>
     </li>
     {% endfor %}
 </ul>
 
 <h2>Inventories</h2>
+<a href="{% url 'add_inventory' %}">Add Inventory</a>
 <ul>
     {% for inventory in inventories %}
     <li>
         {{ inventory.product.name }} in {{ inventory.warehouse.name }} - {{
         inventory.quantity }}
+        <a href="{% url 'edit_inventory' inventory.id %}">Edit</a>
+        <a href="{% url 'delete_inventory' inventory.id %}">Delete</a>
     </li>
     {% endfor %}
 </ul>

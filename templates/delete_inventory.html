@@ -1,0 +1,11 @@
+<!-- delete_inventory.html -->
+<h1>Delete Inventory</h1>
+<p>
+    Are you sure you want to delete the inventory of {{ inventory.product.name
+    }} in {{ inventory.warehouse.name }}?
+</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Delete</button>
+</form>
+<a href="{% url 'home' %}">Cancel</a>

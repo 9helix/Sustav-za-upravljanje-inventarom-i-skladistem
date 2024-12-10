@@ -1,0 +1,7 @@
+<!-- add_warehouse.html -->
+<h1>Add Warehouse</h1>
+<form method="post">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit">Add Warehouse</button>
+</form>
+<a href="{% url 'home' %}">Cancel</a>

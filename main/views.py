@@ -110,3 +110,105 @@ def delete_user(request, user_id):
         user.delete()
         return redirect("home")
     return render(request, "delete_user.html", {"user": user})
+
+
+@login_required
+def add_warehouse(request):
+    if request.method == "POST":
+        form = WarehouseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+    else:
+        form = WarehouseForm()
+    return render(request, "add_warehouse.html", {"form": form})
+
+
+@login_required
+def edit_warehouse(request, warehouse_id):
+    warehouse = get_object_or_404(Warehouse, id=warehouse_id)
+    if request.method == "POST":
+        form = WarehouseForm(request.POST, instance=warehouse)
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+    else:
+        form = WarehouseForm(instance=warehouse)
+    return render(request, "edit_warehouse.html", {"form": form})
+
+
+@login_required
+def delete_warehouse(request, warehouse_id):
+    warehouse = get_object_or_404(Warehouse, id=warehouse_id)
+    if request.method == "POST":
+        warehouse.delete()
+        return redirect("home")
+    return render(request, "delete_warehouse.html", {"warehouse": warehouse})
+
+
+@login_required
+def add_product(request):
+    if request.method == "POST":
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+    else:
+        form = ProductForm()
+    return render(request, "add_product.html", {"form": form})
+
+
+@login_required
+def edit_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if request.method == "POST":
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+    else:
+        form = ProductForm(instance=product)
+    return render(request, "edit_product.html", {"form": form})
+
+
+@login_required
+def delete_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if request.method == "POST":
+        product.delete()
+        return redirect("home")
+    return render(request, "delete_product.html", {"product": product})
+
+
+@login_required
+def add_inventory(request):
+    if request.method == "POST":
+        form = InventoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+    else:
+        form = InventoryForm()
+    return render(request, "add_inventory.html", {"form": form})
+
+
+@login_required
+def edit_inventory(request, inventory_id):
+    inventory = get_object_or_404(Inventory, id=inventory_id)
+    if request.method == "POST":
+        form = InventoryForm(request.POST, instance=inventory)
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+    else:
+        form = InventoryForm(instance=inventory)
+    return render(request, "edit_inventory.html", {"form": form})
+
+
+@login_required
+def delete_inventory(request, inventory_id):
+    inventory = get_object_or_404(Inventory, id=inventory_id)
+    if request.method == "POST":
+        inventory.delete()
+        return redirect("home")
+    return render(request, "delete_inventory.html", {"inventory": inventory})
