@@ -9,13 +9,13 @@ class UserRegistrationForm(forms.ModelForm):
         fields = ["email", "password", "is_admin"]
 
 
-""" class UserRegistrationForm(UserCreationForm):
+class UserEditForm(forms.ModelForm):
     email = forms.EmailField()
     is_admin = forms.BooleanField(required=False, initial=False)
 
     class Meta:
         model = MyUser
-        fields = ("email", "password1", "password2", "is_admin") """
+        fields = ("email", "is_admin")
 
 
 class UserLoginForm(forms.Form):

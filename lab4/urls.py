@@ -17,7 +17,15 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from main.views import register, user_login, user_logout, home
+from main.views import (
+    register,
+    user_login,
+    user_logout,
+    home,
+    add_user,
+    edit_user,
+    delete_user,
+)
 
 urlpatterns = [
     path("register/", register, name="register"),
@@ -25,4 +33,7 @@ urlpatterns = [
     path("logout/", user_logout, name="logout"),
     path("admin/", admin.site.urls),
     path("", home, name="home"),
+    path("add_user/", add_user, name="add_user"),
+    path("edit_user/<int:user_id>/", edit_user, name="edit_user"),
+    path("delete_user/<int:user_id>/", delete_user, name="delete_user"),
 ]

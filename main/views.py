@@ -1,10 +1,11 @@
 # views.py
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import MyUser, Warehouse, Product, Inventory
 from .forms import (
     UserRegistrationForm,
+    UserEditForm,
     UserLoginForm,
     WarehouseForm,
     ProductForm,
@@ -75,3 +76,37 @@ def home(request):
                 "inventories": inventories,
             },
         )
+
+
+@login_required
+def add_user(request):
+    if request.method == "POST":
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+    else:
+        form = UserRegistrationForm()
+    return render(request, "add_user.html", {"form": form})
+
+
+@login_required
+def edit_user(request, user_id):
+    user = get_object_or_404(MyUser, id=user_id)
+    if request.method == "POST":
+        form = UserEditForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+    else:
+        form = UserEditForm(instance=user)
+    return render(request, "edit_user.html", {"form": form})
+
+
+@login_required
+def delete_user(request, user_id):
+    user = get_object_or_404(MyUser, id=user_id)
+    if request.method == "POST":
+        user.delete()
+        return redirect("home")
+    return render(request, "delete_user.html", {"user": user})
