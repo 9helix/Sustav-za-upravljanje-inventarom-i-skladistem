@@ -1,0 +1,7 @@
+<!-- login.html -->
+<form method="post">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit">Login</button>
+</form>
+Not an existing user?
+<a href="{% url 'register' %}"> Register </a>
