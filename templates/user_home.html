@@ -1,12 +1,13 @@
 <!-- user_home.html -->
 <h1>User Dashboard</h1>
-<a href="{% url 'logout' %}">Logout</a>
+<p>Welcome, {{ request.user.email }} - 
+<a href="{% url 'logout' %}">Logout</a></p>
 <h2>Warehouses</h2>
 <ul>
     {% for warehouse in warehouses %}
     <li>
-        {{ warehouse.name }} - {{ warehouse.location }} - {{ warehouse.capacity
-        }}
+        Name: {{ warehouse.name }}, Location: {{ warehouse.location }},
+        Capacity: {{ warehouse.capacity }}
     </li>
     {% endfor %}
 </ul>
@@ -15,7 +16,9 @@
 <ul>
     {% for product in products %}
     <li>
-        {{ product.name }} - {{ product.description }} - {{ product.price }} -
+        Name: {{ product.name }},
+        Description: {{product.description|truncatewords:5 }}, 
+        Price: {{ product.price }}, SKU:
         {{ product.sku }}
     </li>
     {% endfor %}
@@ -25,8 +28,7 @@
 <ul>
     {% for inventory in inventories %}
     <li>
-        {{ inventory.product.name }} in {{ inventory.warehouse.name }} - {{
-        inventory.quantity }}
+        Product <strong>{{ inventory.product.name }}</strong> in warehouse <strong>{{ inventory.warehouse.name }}</strong> with quantity <strong>{{ inventory.quantity }}</strong>
     </li>
     {% endfor %}
 </ul>

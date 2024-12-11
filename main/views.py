@@ -83,7 +83,13 @@ def add_user(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+
+            email = form.cleaned_data["email"]
+            password = form.cleaned_data["password"]
+            user = form.save(commit=False)
+            is_admin = form.cleaned_data["is_admin"]
+            user = MyUser.objects.create_user(email, password, is_admin)
+            user.save()
             return redirect("home")
     else:
         form = UserRegistrationForm()

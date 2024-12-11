@@ -1,6 +1,7 @@
 <!-- admin_home.html -->
 <h1>Admin Dashboard</h1>
-<a href="{% url 'logout' %}">Logout</a>
+<p>Welcome, {{ request.user.email }} - 
+<a href="{% url 'logout' %}">Logout</a></p>
 <h2>Users</h2>
 <a href="{% url 'add_user' %}">Add User</a>
 <ul>
@@ -18,8 +19,8 @@
 <ul>
     {% for warehouse in warehouses %}
     <li>
-        {{ warehouse.name }} - {{ warehouse.location }} - {{ warehouse.capacity
-        }}
+        Name: {{ warehouse.name }}, Location: {{ warehouse.location }},
+        Capacity: {{ warehouse.capacity }}
         <a href="{% url 'edit_warehouse' warehouse.id %}">Edit</a>
         <a href="{% url 'delete_warehouse' warehouse.id %}">Delete</a>
     </li>
@@ -31,7 +32,9 @@
 <ul>
     {% for product in products %}
     <li>
-        {{ product.name }} - {{ product.description }} - {{ product.price }} -
+        Name: {{ product.name }},
+        Description: {{product.description|truncatewords:5 }}, 
+        Price: {{ product.price }}, SKU:
         {{ product.sku }}
         <a href="{% url 'edit_product' product.id %}">Edit</a>
         <a href="{% url 'delete_product' product.id %}">Delete</a>
@@ -44,8 +47,7 @@
 <ul>
     {% for inventory in inventories %}
     <li>
-        {{ inventory.product.name }} in {{ inventory.warehouse.name }} - {{
-        inventory.quantity }}
+        Product <strong>{{ inventory.product.name }}</strong> in warehouse <strong>{{ inventory.warehouse.name }}</strong> with quantity <strong>{{ inventory.quantity }}</strong>
         <a href="{% url 'edit_inventory' inventory.id %}">Edit</a>
         <a href="{% url 'delete_inventory' inventory.id %}">Delete</a>
     </li>
