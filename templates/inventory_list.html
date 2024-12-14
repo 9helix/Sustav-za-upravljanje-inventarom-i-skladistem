@@ -1,0 +1,30 @@
+<!-- inventory_list.html -->
+<h1>Inventories</h1>
+<p>
+    Welcome, {{ request.user.email }} - <a href="{% url 'logout' %}">Logout</a>
+</p>
+<a href="{% url 'home' %}">Back to Home</a>
+
+<form method="get">
+    {{ filter_form.as_p }}
+    <button type="submit">Filter</button>
+    <a href="{% url 'inventory_list' %}">Clear Filters</a>
+</form>
+
+{% if user.is_admin %}
+<a href="{% url 'add_inventory' %}">Add Inventory</a>
+{% endif %}
+
+<ul>
+    {% for inventory in inventories %}
+    <li>
+        Product <strong>{{ inventory.product.name }}</strong> in warehouse
+        <strong>{{ inventory.warehouse.name }}</strong> with quantity
+        <strong>{{ inventory.quantity }}</strong>
+        {% if user.is_admin %}
+        <a href="{% url 'edit_inventory' inventory.id %}">Edit</a>
+        <a href="{% url 'delete_inventory' inventory.id %}">Delete</a>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>

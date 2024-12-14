@@ -4,13 +4,19 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import MyUser, Warehouse, Product, Inventory
 from .forms import (
+    InventoryFilterForm,
+    ProductFilterForm,
+    UserFilterForm,
     UserRegistrationForm,
     UserEditForm,
     UserLoginForm,
+    WarehouseFilterForm,
     WarehouseForm,
     ProductForm,
     InventoryForm,
 )
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView
 
 
 def register(request):
@@ -48,34 +54,96 @@ def user_logout(request):
 
 @login_required
 def home(request):
-    if request.user.is_admin:
-        users = MyUser.objects.all()
-        warehouses = Warehouse.objects.all()
-        products = Product.objects.all()
-        inventories = Inventory.objects.all()
-        return render(
-            request,
-            "admin_home.html",
-            {
-                "users": users,
-                "warehouses": warehouses,
-                "products": products,
-                "inventories": inventories,
-            },
-        )
-    else:
-        warehouses = Warehouse.objects.all()
-        products = Product.objects.all()
-        inventories = Inventory.objects.all()
-        return render(
-            request,
-            "user_home.html",
-            {
-                "warehouses": warehouses,
-                "products": products,
-                "inventories": inventories,
-            },
-        )
+    return render(request, "home.html")
+
+
+# views.py
+class WarehouseListView(LoginRequiredMixin, ListView):
+    model = Warehouse
+    template_name = "warehouse_list.html"
+    context_object_name = "warehouses"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        name = self.request.GET.get("name")
+        location = self.request.GET.get("location")
+
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        if location:
+            queryset = queryset.filter(location__icontains=location)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["filter_form"] = WarehouseFilterForm(self.request.GET)
+        return context
+
+
+class ProductListView(LoginRequiredMixin, ListView):
+    model = Product
+    template_name = "product_list.html"
+    context_object_name = "products"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        name = self.request.GET.get("name")
+        min_price = self.request.GET.get("min_price")
+
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        if min_price:
+            queryset = queryset.filter(price__gte=min_price)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["filter_form"] = ProductFilterForm(self.request.GET)
+        return context
+
+
+class InventoryListView(LoginRequiredMixin, ListView):
+    model = Inventory
+    template_name = "inventory_list.html"
+    context_object_name = "inventories"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        warehouse = self.request.GET.get("warehouse")
+        product = self.request.GET.get("product")
+
+        if warehouse:
+            queryset = queryset.filter(warehouse=warehouse)
+        if product:
+            queryset = queryset.filter(product=product)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["filter_form"] = InventoryFilterForm(self.request.GET)
+        return context
+
+
+class UserListView(LoginRequiredMixin, ListView):
+    model = MyUser
+    template_name = "user_list.html"
+    context_object_name = "users"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        email = self.request.GET.get("email")
+        is_admin = self.request.GET.get("is_admin")
+
+        if email:
+            queryset = queryset.filter(email__icontains=email)
+        if is_admin:
+            queryset = queryset.filter(is_admin=True)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["filter_form"] = UserFilterForm(self.request.GET)
+        return context
 
 
 @login_required

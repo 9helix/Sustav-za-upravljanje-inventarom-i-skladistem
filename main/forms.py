@@ -39,3 +39,23 @@ class InventoryForm(forms.ModelForm):
     class Meta:
         model = Inventory
         fields = ["warehouse", "product", "quantity"]
+
+
+class WarehouseFilterForm(forms.Form):
+    name = forms.CharField(required=False)
+    location = forms.CharField(required=False)
+
+
+class ProductFilterForm(forms.Form):
+    name = forms.CharField(required=False)
+    min_price = forms.DecimalField(required=False)
+
+
+class InventoryFilterForm(forms.Form):
+    warehouse = forms.ModelChoiceField(queryset=Warehouse.objects.all(), required=False)
+    product = forms.ModelChoiceField(queryset=Product.objects.all(), required=False)
+
+
+class UserFilterForm(forms.Form):
+    email = forms.CharField(required=False)
+    is_admin = forms.BooleanField(required=False)

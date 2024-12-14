@@ -18,6 +18,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from main.views import (
+    InventoryListView,
+    ProductListView,
+    UserListView,
+    WarehouseListView,
     register,
     user_login,
     user_logout,
@@ -62,4 +66,8 @@ urlpatterns = [
         delete_inventory,
         name="delete_inventory",
     ),
+    path("warehouses/", WarehouseListView.as_view(), name="warehouse_list"),
+    path("products/", ProductListView.as_view(), name="product_list"),
+    path("inventories/", InventoryListView.as_view(), name="inventory_list"),
+    path("users/", UserListView.as_view(), name="user_list"),
 ]
