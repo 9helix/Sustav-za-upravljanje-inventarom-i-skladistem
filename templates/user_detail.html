@@ -1,0 +1,12 @@
+<!-- user_detail.html -->
+<h1>User Details</h1>
+<p>
+    Welcome, {{ request.user.email }} - <a href="{% url 'logout' %}">Logout</a>
+</p>
+<a href="{% url 'user_list' %}">Back to Users</a>
+
+<div>
+    <h2>{{ user_detail.email }}</h2>
+    <p>Admin: {{ user_detail.is_admin|yesno:"Yes,No" }}</p>
+    <p>Active: {{ user_detail.is_active|yesno:"Yes,No" }}</p>
+</div>

@@ -18,12 +18,11 @@
 <ul>
     {% for product in products %}
     <li>
-        Name: {{ product.name }}, Description:
-        {{product.description|truncatewords:5 }}, Price: {{ product.price }},
-        SKU: {{ product.sku }} {% if user.is_admin %}
+        {{ product.name }}{% if user.is_admin %} -
         <a href="{% url 'edit_product' product.id %}">Edit</a>
         <a href="{% url 'delete_product' product.id %}">Delete</a>
         {% endif %}
+        <a href="{% url 'product_detail' product.id %}">View Details</a>
     </li>
     {% endfor %}
 </ul>

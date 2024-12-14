@@ -1,0 +1,25 @@
+<!-- warehouse_detail.html -->
+<h1>Warehouse Details</h1>
+<p>
+    Welcome, {{ request.user.email }} - <a href="{% url 'logout' %}">Logout</a>
+</p>
+<a href="{% url 'warehouse_list' %}">Back to Warehouses</a>
+
+<div>
+    <h2>{{ warehouse.name }}</h2>
+    <p>Location: {{ warehouse.location }}</p>
+    <p>Capacity: {{ warehouse.capacity }}</p>
+
+    <h3>Inventories in this warehouse:</h3>
+    {% if inventories %}
+    <ul>
+        {% for inventory in inventories %}
+        <li>
+            Product: {{ inventory.product.name }} - Quantity: {{
+            inventory.quantity }}
+            <a href="{% url 'inventory_detail' inventory.id %}">View Details</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %} No inventories. {% endif %}
+</div>

@@ -286,3 +286,41 @@ def delete_inventory(request, inventory_id):
         inventory.delete()
         return redirect("home")
     return render(request, "delete_inventory.html", {"inventory": inventory})
+
+
+# views.py
+from django.views.generic import DetailView
+
+
+class UserDetailView(LoginRequiredMixin, DetailView):
+    model = MyUser
+    template_name = "user_detail.html"
+    context_object_name = "user_detail"
+
+
+class WarehouseDetailView(LoginRequiredMixin, DetailView):
+    model = Warehouse
+    template_name = "warehouse_detail.html"
+    context_object_name = "warehouse"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["inventories"] = Inventory.objects.filter(warehouse=self.object)
+        return context
+
+
+class ProductDetailView(LoginRequiredMixin, DetailView):
+    model = Product
+    template_name = "product_detail.html"
+    context_object_name = "product"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["inventories"] = Inventory.objects.filter(product=self.object)
+        return context
+
+
+class InventoryDetailView(LoginRequiredMixin, DetailView):
+    model = Inventory
+    template_name = "inventory_detail.html"
+    context_object_name = "inventory"

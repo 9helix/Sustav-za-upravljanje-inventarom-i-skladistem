@@ -18,11 +18,11 @@
 <ul>
     {% for warehouse in warehouses %}
     <li>
-        Name: {{ warehouse.name }}, Location: {{ warehouse.location }},
-        Capacity: {{ warehouse.capacity }} {% if user.is_admin %}
+        {{ warehouse.name }} - {% if user.is_admin %}
         <a href="{% url 'edit_warehouse' warehouse.id %}">Edit</a>
         <a href="{% url 'delete_warehouse' warehouse.id %}">Delete</a>
         {% endif %}
+        <a href="{% url 'warehouse_detail' warehouse.id %}">View Details</a>
     </li>
     {% endfor %}
 </ul>

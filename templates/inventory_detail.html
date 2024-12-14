@@ -1,0 +1,21 @@
+<!-- inventory_detail.html -->
+<h1>Inventory Details</h1>
+<p>
+    Welcome, {{ request.user.email }} - <a href="{% url 'logout' %}">Logout</a>
+</p>
+<a href="{% url 'inventory_list' %}">Back to Inventories</a>
+
+<div>
+    <h2>Product: {{ inventory.product.name }}</h2>
+    <p>Warehouse: {{ inventory.warehouse.name }}</p>
+    <p>Quantity: {{ inventory.quantity }}</p>
+
+    <h3>Product Details:</h3>
+    <p>Description: {{ inventory.product.description }}</p>
+    <p>Price: {{ inventory.product.price }}</p>
+    <p>SKU: {{ inventory.product.sku }}</p>
+
+    <h3>Warehouse Details:</h3>
+    <p>Location: {{ inventory.warehouse.location }}</p>
+    <p>Capacity: {{ inventory.warehouse.capacity }}</p>
+</div>

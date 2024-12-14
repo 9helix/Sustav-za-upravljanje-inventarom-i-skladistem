@@ -19,12 +19,12 @@
     {% for inventory in inventories %}
     <li>
         Product <strong>{{ inventory.product.name }}</strong> in warehouse
-        <strong>{{ inventory.warehouse.name }}</strong> with quantity
-        <strong>{{ inventory.quantity }}</strong>
-        {% if user.is_admin %}
+        <strong>{{ inventory.warehouse.name }}</strong>
+        {% if user.is_admin %} -
         <a href="{% url 'edit_inventory' inventory.id %}">Edit</a>
         <a href="{% url 'delete_inventory' inventory.id %}">Delete</a>
         {% endif %}
+        <a href="{% url 'inventory_detail' inventory.id %}">View Details</a>
     </li>
     {% endfor %}
 </ul>
