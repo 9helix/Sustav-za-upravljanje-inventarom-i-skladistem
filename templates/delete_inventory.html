@@ -1,8 +1,9 @@
 <!-- delete_inventory.html -->
 <h1>Delete Inventory</h1>
 <p>
-    Are you sure you want to delete the inventory of {{ inventory.product.name
-    }} in {{ inventory.warehouse.name }}?
+    Are you sure you want to delete the inventory of
+    <strong>{{ inventory.product.name }}</strong> in
+    <strong>{{ inventory.warehouse.name }}</strong>?
 </p>
 <form method="post">
     {% csrf_token %}
