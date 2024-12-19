@@ -17,6 +17,7 @@ from .forms import (
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
+from django.urls import reverse
 
 
 def register(request):
@@ -171,7 +172,7 @@ def edit_user(request, user_id):
         form = UserEditForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            return redirect("home")
+            return redirect(reverse("user_detail", kwargs={"pk": user.id}))
     else:
         form = UserEditForm(instance=user)
     return render(request, "edit_user.html", {"form": form})
@@ -205,7 +206,7 @@ def edit_warehouse(request, warehouse_id):
         form = WarehouseForm(request.POST, instance=warehouse)
         if form.is_valid():
             form.save()
-            return redirect("home")
+            return redirect(reverse("warehouse_detail", kwargs={"pk": warehouse.id}))
     else:
         form = WarehouseForm(instance=warehouse)
     return render(request, "edit_warehouse.html", {"form": form})
@@ -239,7 +240,7 @@ def edit_product(request, product_id):
         form = ProductForm(request.POST, instance=product)
         if form.is_valid():
             form.save()
-            return redirect("home")
+            return redirect(reverse("product_detail", kwargs={"pk": product.id}))
     else:
         form = ProductForm(instance=product)
     return render(request, "edit_product.html", {"form": form})
@@ -273,7 +274,7 @@ def edit_inventory(request, inventory_id):
         form = InventoryForm(request.POST, instance=inventory)
         if form.is_valid():
             form.save()
-            return redirect("home")
+            return redirect(reverse("inventory_detail", kwargs={"pk": inventory.id}))
     else:
         form = InventoryForm(instance=inventory)
     return render(request, "edit_inventory.html", {"form": form})
