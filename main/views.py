@@ -158,7 +158,7 @@ def add_user(request):
             is_admin = form.cleaned_data["is_admin"]
             user = MyUser.objects.create_user(email, password, is_admin)
             user.save()
-            return redirect("home")
+            return redirect("user_list")
     else:
         form = UserRegistrationForm()
     return render(request, "add_user.html", {"form": form})
@@ -182,7 +182,7 @@ def delete_user(request, user_id):
     user = get_object_or_404(MyUser, id=user_id)
     if request.method == "POST":
         user.delete()
-        return redirect("home")
+        return redirect("user_list")
     return render(request, "delete_user.html", {"user": user})
 
 
@@ -192,7 +192,7 @@ def add_warehouse(request):
         form = WarehouseForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("home")
+            return redirect("warehouse_list")
     else:
         form = WarehouseForm()
     return render(request, "add_warehouse.html", {"form": form})
@@ -216,7 +216,7 @@ def delete_warehouse(request, warehouse_id):
     warehouse = get_object_or_404(Warehouse, id=warehouse_id)
     if request.method == "POST":
         warehouse.delete()
-        return redirect("home")
+        return redirect("warehouse_list")
     return render(request, "delete_warehouse.html", {"warehouse": warehouse})
 
 
@@ -226,7 +226,7 @@ def add_product(request):
         form = ProductForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("home")
+            return redirect("product_list")
     else:
         form = ProductForm()
     return render(request, "add_product.html", {"form": form})
@@ -250,7 +250,7 @@ def delete_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     if request.method == "POST":
         product.delete()
-        return redirect("home")
+        return redirect("product_list")
     return render(request, "delete_product.html", {"product": product})
 
 
@@ -260,7 +260,7 @@ def add_inventory(request):
         form = InventoryForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("home")
+            return redirect("inventory_list")
     else:
         form = InventoryForm()
     return render(request, "add_inventory.html", {"form": form})
@@ -284,7 +284,7 @@ def delete_inventory(request, inventory_id):
     inventory = get_object_or_404(Inventory, id=inventory_id)
     if request.method == "POST":
         inventory.delete()
-        return redirect("home")
+        return redirect("inventory_list")
     return render(request, "delete_inventory.html", {"inventory": inventory})
 
 
