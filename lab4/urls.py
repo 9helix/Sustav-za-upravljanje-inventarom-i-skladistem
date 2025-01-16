@@ -16,7 +16,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from main.views import (
     InventoryDetailView,
     InventoryListView,
@@ -26,6 +26,7 @@ from main.views import (
     UserListView,
     WarehouseDetailView,
     WarehouseListView,
+    WarehouseViewSet,
     register,
     user_login,
     user_logout,
@@ -43,6 +44,7 @@ from main.views import (
     edit_inventory,
     delete_inventory,
 )
+from rest_framework.routers import DefaultRouter
 
 urlpatterns = [
     path("register/", register, name="register"),
@@ -75,10 +77,13 @@ urlpatterns = [
     path("inventories/", InventoryListView.as_view(), name="inventory_list"),
     path("users/", UserListView.as_view(), name="user_list"),
 ]
+router = DefaultRouter()
+router.register(r"warehouses", WarehouseViewSet)
 
 urlpatterns += [
     path("user/<int:pk>/", UserDetailView.as_view(), name="user_detail"),
     path("warehouse/<int:pk>/", WarehouseDetailView.as_view(), name="warehouse_detail"),
     path("product/<int:pk>/", ProductDetailView.as_view(), name="product_detail"),
     path("inventory/<int:pk>/", InventoryDetailView.as_view(), name="inventory_detail"),
+    path("api/", include(router.urls)),
 ]

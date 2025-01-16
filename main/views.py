@@ -18,6 +18,8 @@ from .forms import (
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
 from django.urls import reverse
+from rest_framework import viewsets
+from .serializers import WarehouseSerializer
 
 
 def register(request):
@@ -325,3 +327,59 @@ class InventoryDetailView(LoginRequiredMixin, DetailView):
     model = Inventory
     template_name = "inventory_detail.html"
     context_object_name = "inventory"
+
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from rest_framework.exceptions import NotFound, ValidationError
+from rest_framework.permissions import IsAuthenticated
+
+class WarehouseViewSet(viewsets.ModelViewSet):
+    queryset = Warehouse.objects.all()
+    serializer_class = WarehouseSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        try:
+            lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+            if not str(self.kwargs[lookup_url_kwarg]).isdigit():
+                raise ValidationError("Invalid ID format")
+            return super().get_object()
+        except ValidationError:
+            raise NotFound(detail="Invalid warehouse ID format. Must be a number.")
+        except:
+            raise NotFound(detail="Warehouse with this ID does not exist")
+
+    def create(self, request, *args, **kwargs):
+        # Check if all required fields are present
+        required_fields = ['name', 'location', 'capacity']
+        for field in required_fields:
+            if field not in request.data:
+                return Response(
+                    {"error": f"Missing required field: {field}"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+        # Validate field types
+        if not isinstance(request.data.get('name'), str):
+            return Response(
+                {"error": "Name must be a string"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if not isinstance(request.data.get('location'), str):
+            return Response(
+                {"error": "Location must be a string"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            capacity = int(request.data.get('capacity'))
+            if capacity <= 0:
+                raise ValueError
+        except (ValueError, TypeError):
+            return Response(
+                {"error": "Capacity must be a positive number"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return super().create(request, *args, **kwargs)
